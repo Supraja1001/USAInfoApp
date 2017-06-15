@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.supraja.usainfoapp.MainActivity"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="#FFFFFF">
 
@@ -22,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:id="@+id/image"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -31,16 +29,5 @@
         android:id="@+id/frame_layout">
 
     </FrameLayout>
-
-<!--31c8c7492e1a5ae87c7a73821dc9cf30d894d7dc-->
-
-    <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/fbButton"-->
-        <!--android:layout_marginTop="150dp"-->
-        <!--android:layout_gravity="center"-->
-        <!--android:text="Continue"-->
-        <!--android:visibility="gone"/>-->
 
 </LinearLayout>

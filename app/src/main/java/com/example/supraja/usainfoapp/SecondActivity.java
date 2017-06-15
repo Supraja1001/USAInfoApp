@@ -43,7 +43,6 @@ public class SecondActivity extends AppCompatActivity {
     String name;
     JSONObject object;
     Context context;
-    StateJsonParser stateJsonParser;
 
     public static final String BASE_URL = "https://restcountries.eu/rest/v2/";
     private static final String TAG = "SecondActivity";
@@ -61,9 +60,9 @@ public class SecondActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         textView = (TextView)findViewById(R.id.textView);
-        // name = getIntent().getStringExtra("profileName");
-       // Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
-        textView.setText("Hello");
+         name = getIntent().getStringExtra("profileName");
+        Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
+        textView.setText(name);
 
 
         ApiService apiService = RestClient.getApiService();
@@ -97,7 +96,12 @@ public class SecondActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu,menu);
         return true;
     }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
 
+            menu.findItem(R.id.profileName).setTitle("Hey");
+        return super.onPrepareOptionsMenu(menu);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -128,6 +132,7 @@ public class SecondActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         moveTaskToBack(true);
         SecondActivity.this.finish();
     }

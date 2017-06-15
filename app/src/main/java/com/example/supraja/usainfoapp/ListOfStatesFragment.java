@@ -1,5 +1,7 @@
 package com.example.supraja.usainfoapp;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,12 +23,20 @@ import retrofit2.Retrofit;
 
 public class ListOfStatesFragment extends Fragment {
 
+    Context mContext;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.states_fragment,container,false);
 
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
         DividerDecoration dividerDecoration = new DividerDecoration(getActivity());
-        StatesRecyclerAdapter adapter = new StatesRecyclerAdapter(getActivity(),StatesList.getData());
+        StatesRecyclerAdapter adapter = new StatesRecyclerAdapter(getActivity(),StatesList.getData(),new ListOfStatesFragment() );
         recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
@@ -35,4 +45,5 @@ public class ListOfStatesFragment extends Fragment {
 
                return view;
     }
+
 }

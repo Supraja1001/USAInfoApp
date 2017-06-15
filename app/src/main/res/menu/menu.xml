@@ -4,8 +4,9 @@
     <item android:id="@+id/profileName"
         android:title="Hello User"
         app:showAsAction="always"/>
-    <item android:id="@+id/logout"
-    android:title="Logout"
-    app:showAsAction="never"/>
+    <item
+        android:id="@+id/logout"
+        android:title="Logout"
+        app:showAsAction="never" />
 
 </menu>

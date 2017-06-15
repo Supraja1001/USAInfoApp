@@ -1,9 +1,14 @@
 package com.example.supraja.usainfoapp;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,19 +29,26 @@ import static java.security.AccessController.getContext;
 
 public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerAdapter.GenericViewHolder>{
 
+    private StateDetailsFragment stateDetailsFragment;
+    private ListOfStatesFragment listOfStatesFragment;
+    FragmentTransaction transaction;
+    FragmentManager fragmentManager;
+
     private List<StatesList> dataList = Collections.emptyList();
     private LayoutInflater inflater;
     private Context context;
 
-    public StatesRecyclerAdapter(Context context, List<StatesList> data) {
+    public StatesRecyclerAdapter(Context context, List<StatesList> data, ListOfStatesFragment listOfStatesFragment) {
+
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.dataList = data;
+        this.listOfStatesFragment = listOfStatesFragment;
+
     }
 
     @Override
     public int getItemViewType(int position) {
-
         if (position % 2 == 0) {
             return 2;
         } else return 1;
@@ -63,21 +75,15 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
     @Override
     public void onBindViewHolder(final GenericViewHolder holder, final int position) {
         final StatesList current = dataList.get(position);
+
         switch (holder.getItemViewType()) {
+
             case 1:
 
                 MainViewHolder mainHolder = (MainViewHolder) holder;
 
                 mainHolder.textView.setText(current.getFirstTitle());
                 mainHolder.imageView.setImageResource(current.getImageID());
-
-                mainHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context,"First View",Toast.LENGTH_SHORT).show();
-
-                    }
-                });
 
                 break;
 
@@ -95,42 +101,48 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
                     }
                 });
+                break;
 
         }
 
-
     }
-
 
     public class GenericViewHolder extends RecyclerView.ViewHolder {
 
         public GenericViewHolder(View itemView) {
             super(itemView);
         }
-    }
 
+    }
 
     public class MainViewHolder extends GenericViewHolder {
 
         TextView textView;
         ImageView imageView;
 
-
         public MainViewHolder(View itemView) {
             super(itemView);
-
-            context = itemView.getContext();
 
             textView = (TextView) itemView.findViewById(R.id.textView);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
 
-//            textView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(context, SecondActivity.class);
-//                    context.startActivity(intent);
-//                }
-//            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context,"First View",Toast.LENGTH_SHORT).show();
+
+                    stateDetailsFragment = new StateDetailsFragment();
+//                  Bundle args = new Bundle();
+//                  args.putString("data", "This data has sent to FragmentTwo");
+//                  stateDetailsFragment.setArguments(args);
+                    transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.frame_layout, stateDetailsFragment);
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+                }
+            });
         }
     }
 
@@ -139,22 +151,12 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
         TextView textView;
         ImageView imageView;
 
-
         public SecondViewHolder(View itemView) {
             super(itemView);
-
-            context = itemView.getContext();
 
             textView = (TextView) itemView.findViewById(R.id.textView);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
 
-//            textView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(context, SecondActivity.class);
-//                    context.startActivity(intent);
-//                }
-//            });
         }
     }
 }

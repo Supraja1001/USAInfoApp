@@ -41,9 +41,11 @@ import java.io.InputStream;
 public class FBLoginFragment extends Fragment{
 
     private TextView textView;
-    Button getInfoButton;
-    ImageView profilepicImageView;
+    private Button getInfoButton;
+    private ImageView profilePicImageView;
+    ImageView imageView;
     String name;
+    String profileName;
 
     private CallbackManager mCallbackManager;
     private AccessTokenTracker mTokenTracker;
@@ -53,23 +55,30 @@ public class FBLoginFragment extends Fragment{
 
         @Override
         public void onSuccess(LoginResult loginResult) {
+
             Log.d("####", "onSuccess");
             AccessToken accessToken = loginResult.getAccessToken();
             Profile profile = Profile.getCurrentProfile();
-           // updateUI();
+            Log.d("####","Profile onSuccess : " +profile);
+            updateUI();
             textView.setText(constructWelcomeMessage(profile));
+
             getInfoButton.setVisibility(View.VISIBLE);
+            if(profile!=null){
+                name = profile.getName();
+            } else{
+                Toast.makeText(getActivity(),"Name is null",Toast.LENGTH_SHORT).show();
+            }
 
             getInfoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(getActivity(),SecondActivity.class);
-                   // intent.putExtra("profileName",name);
+                    intent.putExtra("profileName",name);
                     startActivity(intent);
 
                 }
             });
-
         }
 
         @Override
@@ -84,9 +93,12 @@ public class FBLoginFragment extends Fragment{
         }
     };
 
+
     public FBLoginFragment(){
 
     }
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -101,6 +113,8 @@ public class FBLoginFragment extends Fragment{
 
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -110,22 +124,20 @@ public class FBLoginFragment extends Fragment{
         return v;
     }
 
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         //super.onViewCreated(view, savedInstanceState);
         textView = (TextView)view.findViewById(R.id.textView);
+         imageView = (ImageView)getActivity().findViewById(R.id.image);
+       // profilePicImageView = (ImageView)view.findViewById(R.id.profilePicture);
         setupLoginButton(view);
 
 
    }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        Profile profile = Profile.getCurrentProfile();
-//        textView.setText(constructWelcomeMessage(profile));
-//
-//    }
+
 
     @Override
     public void onStop() {
@@ -135,6 +147,14 @@ public class FBLoginFragment extends Fragment{
         LoginManager.getInstance().logOut();
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LoginManager.getInstance().logOut();
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -142,24 +162,32 @@ public class FBLoginFragment extends Fragment{
 
     }
 
+
     private void setupTokenTracker() {
         mTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
-                Log.d("####", "" + currentAccessToken);
+                Log.d("####", "AccessToken " + currentAccessToken);
             }
         };
     }
 
-    private void setupProfileTracker() {
+
+
+    private String setupProfileTracker() {
+
         mProfileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                Log.d("####", "" + currentProfile);
+                Log.d("####", "ProfileTracker " + currentProfile);
+                profileName = constructWelcomeMessage(currentProfile);
                 textView.setText(constructWelcomeMessage(currentProfile));
             }
         };
+        return profileName;
     }
+
+
 
     private void setupLoginButton(View view) {
         LoginButton mButtonLogin = (LoginButton) view.findViewById(R.id.login_button);
@@ -168,62 +196,67 @@ public class FBLoginFragment extends Fragment{
         mButtonLogin.registerCallback(mCallbackManager, mFacebookCallback);
     }
 
+
+
     private String constructWelcomeMessage(Profile profile) {
         StringBuffer stringBuffer = new StringBuffer();
         if (profile != null) {
             stringBuffer.append("Welcome " + profile.getName());
+            Log.d("####", "WelcomeProfile " + profile.getName());
         }
         return stringBuffer.toString();
     }
 
-//    private void updateUI() {
-//
-//        Profile profile = Profile.getCurrentProfile();
-//        if (profile != null) {
-//            new LoadProfileImage(profilepicImageView).execute(profile.getProfilePictureUri(200, 200).toString());
-//            //greeting.setText(getString(R.string.hello_user, profile.getFirstName()));
-//
-//        } else {
-//            Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.user_default);
-//            profilepicImageView.setImageBitmap(icon);
-//                    //setImageBitmap(ImageHelper.getRoundedCornerBitmap(getContext(), icon, 200, 200, 200, false, false, false, false));
-//            textView.setText(null);
-//
-//        }
-//    }
-//
-//    private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
-//        ImageView bmImage;
-//
-//        public LoadProfileImage(ImageView bmImage) {
-//            this.bmImage = bmImage;
-//        }
-//
-//        protected Bitmap doInBackground(String... uri) {
-//            String url = uri[0];
-//            Bitmap mIcon11 = null;
-//            try {
-//                InputStream in = new java.net.URL(url).openStream();
-//                mIcon11 = BitmapFactory.decodeStream(in);
-//            } catch (Exception e) {
-//                Log.e("Error", e.getMessage());
-//                e.printStackTrace();
-//            }
-//            return mIcon11;
-//        }
-//
-//        protected void onPostExecute(Bitmap result) {
-//
-//            if (result != null) {
-//
-//
-//                Bitmap resized = Bitmap.createScaledBitmap(result,200,200, true);
-//                bmImage.setImageBitmap(resized);
-//                //ImageHelper.getRoundedCornerBitmap(getContext(),resized,250,200,200, false, false, false, false));
-//
-//            }
-//        }
-//    }
+
+
+    private void updateUI() {
+
+        Profile profile = Profile.getCurrentProfile();
+        Log.d("####","Profile Picture : "+profile);
+        if (profile != null) {
+            new LoadProfileImage(imageView).execute(profile.getProfilePictureUri(200, 200).toString());
+            //greeting.setText(getString(R.string.hello_user, profile.getFirstName()));
+
+        } else {
+            Bitmap icon = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.user_default);
+            imageView.setImageBitmap(icon);
+                    //setImageBitmap(ImageHelper.getRoundedCornerBitmap(getContext(), icon, 200, 200, 200, false, false, false, false));
+            textView.setText(null);
+
+        }
+    }
+
+
+
+    private class LoadProfileImage extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public LoadProfileImage(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+        protected Bitmap doInBackground(String... uri) {
+            String url = uri[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+
+            if (result != null) {
+                Bitmap resized = Bitmap.createScaledBitmap(result,200,200, true);
+                bmImage.setImageBitmap(resized);
+                //ImageHelper.getRoundedCornerBitmap(getContext(),resized,250,200,200, false, false, false, false));
+
+            }
+        }
+    }
 
 
 }
