@@ -38,7 +38,6 @@ public class SecondActivity extends AppCompatActivity {
     String name;
     JSONObject object;
     Context context;
-    StateJsonParser stateJsonParser;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,9 +49,9 @@ public class SecondActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         textView = (TextView)findViewById(R.id.textView);
-        // name = getIntent().getStringExtra("profileName");
-       // Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
-        textView.setText("Hello");
+         name = getIntent().getStringExtra("profileName");
+        Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
+        textView.setText(name);
 
 
         ListOfStatesFragment statesFragment = new ListOfStatesFragment();
@@ -68,7 +67,12 @@ public class SecondActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu,menu);
         return true;
     }
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
 
+            menu.findItem(R.id.profileName).setTitle("Hey");
+        return super.onPrepareOptionsMenu(menu);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
@@ -99,6 +103,7 @@ public class SecondActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         moveTaskToBack(true);
         SecondActivity.this.finish();
     }

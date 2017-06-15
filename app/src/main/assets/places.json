@@ -1,0 +1,25 @@
+{
+        "PlacesToVisit": [
+          {"place":"Inner Harbour & The National Aquarium",
+          "Location":"Baltimore"},
+          {"place":"Chesapeake Bay",
+            "Location":"Baltimore"} ,
+          {"place":"Potomac Waterfalls",
+            "Location":"Maryland"}  ,
+          {"place":"White House",
+            "Location":"Washington"}  ,
+          {"place":"Washington Memorial",
+            "Location":"Washington"}  ,
+          {"place":"White Mountains",
+            "Location":"New Hampshire"}  ,
+          {"place":"Cannobie Lakepark",
+            "Location":"Salem"}  ,
+          {"place":"Golden Gate Bridge",
+            "Location":"San Francisco"} ,
+          {"place":"Disney World",
+            "Location":"Los Angeles"},
+          {"place":"Universal Studios",
+            "Location":"Orlando"}
+        ]
+
+}

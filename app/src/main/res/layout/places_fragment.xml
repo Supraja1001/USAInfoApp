@@ -3,14 +3,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/states_frame"
-    >
+    android:id="@+id/places_frame">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView"
-        android:text = "List of States"
+        android:text = "Top 10 Places to Visit"
         android:layout_centerInParent = "true"
         android:textSize="35sp"
         android:textStyle="bold"
