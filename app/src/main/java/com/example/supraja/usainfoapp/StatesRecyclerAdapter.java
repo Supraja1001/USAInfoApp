@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -74,6 +75,7 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
     @Override
     public void onBindViewHolder(final GenericViewHolder holder, final int position) {
+
         final StatesList current = dataList.get(position);
 
         switch (holder.getItemViewType()) {
@@ -98,11 +100,10 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(context,"Second View",Toast.LENGTH_SHORT).show();
-
                     }
                 });
-                break;
 
+                break;
         }
 
     }
@@ -125,16 +126,23 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
             textView = (TextView) itemView.findViewById(R.id.textView);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
+            final Uri fileUri = Uri.parse("android.resource://com.example.supraja.usainfoapp/" +R.drawable.androidlogo);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context,"First View",Toast.LENGTH_SHORT).show();
 
                     stateDetailsFragment = new StateDetailsFragment();
 //                  Bundle args = new Bundle();
 //                  args.putString("data", "This data has sent to FragmentTwo");
 //                  stateDetailsFragment.setArguments(args);
+                    String stringUri = fileUri.getPath().toString();
+
+                    Bundle args = new Bundle();
+                    args.putString("Image", stringUri);
+                    Toast.makeText(context,"in States : "+stringUri,Toast.LENGTH_SHORT).show();
+                    stateDetailsFragment.setArguments(args);
+
                     transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.frame_layout, stateDetailsFragment);
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -152,6 +160,7 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
         ImageView imageView;
 
         public SecondViewHolder(View itemView) {
+
             super(itemView);
 
             textView = (TextView) itemView.findViewById(R.id.textView);

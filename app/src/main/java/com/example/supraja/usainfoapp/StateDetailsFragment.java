@@ -3,6 +3,8 @@ package com.example.supraja.usainfoapp;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -36,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -54,6 +58,7 @@ public class StateDetailsFragment extends Fragment implements OnMapReadyCallback
     FragmentTransaction transaction;
     Button button;
     Context context;
+    ImageView imageView;
 
 
     public StateDetailsFragment(){
@@ -70,7 +75,13 @@ public class StateDetailsFragment extends Fragment implements OnMapReadyCallback
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.state_details_fragment,container,false);
         button = (Button)v.findViewById(R.id.visitPlaces);
+        imageView = (ImageView)v.findViewById(R.id.image);
         context = v.getContext();
+
+        String imgPath = getArguments().getString("Image");
+        Toast.makeText(context,"In Details"+imgPath,Toast.LENGTH_SHORT).show();
+        Bitmap bitmap = BitmapFactory.decodeFile(imgPath);
+        imageView.setImageBitmap(bitmap);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,12 +105,12 @@ public class StateDetailsFragment extends Fragment implements OnMapReadyCallback
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mapView = (MapView)v.findViewById(R.id.mapView);
-        if(mapView!=null){
-            mapView.onCreate(null);
-            mapView.onResume();
-            mapView.getMapAsync(this);
-        }
+//        mapView = (MapView)v.findViewById(R.id.mapView);
+//        if(mapView!=null){
+//            mapView.onCreate(null);
+//            mapView.onResume();
+//            mapView.getMapAsync(this);
+//        }
     }
 
     @Override
