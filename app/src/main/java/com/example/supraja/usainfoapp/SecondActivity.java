@@ -44,10 +44,9 @@ public class SecondActivity extends AppCompatActivity {
     JSONObject object;
     Context context;
 
-    public static final String BASE_URL = "https://restcountries.eu/rest/v2/";
-    private static final String TAG = "SecondActivity";
 
-    List<User> Users;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -65,19 +64,6 @@ public class SecondActivity extends AppCompatActivity {
         textView.setText(name);
 
 
-        ApiService apiService = RestClient.getApiService();
-        Call<User> userCall=apiService.getCountryNames();
-        userCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                Log.e("><><><><><>>",""+response.body().getName());
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
-            }
-        });
 
         ListOfStatesFragment statesFragment = new ListOfStatesFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();

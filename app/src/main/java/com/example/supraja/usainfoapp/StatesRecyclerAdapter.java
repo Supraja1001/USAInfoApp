@@ -10,12 +10,15 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,15 +37,17 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
     FragmentTransaction transaction;
     FragmentManager fragmentManager;
 
-    private List<StatesList> dataList = Collections.emptyList();
+    //private List<StatesList> dataList = Collections.emptyList();
     private LayoutInflater inflater;
     private Context context;
 
-    public StatesRecyclerAdapter(Context context, List<StatesList> data, ListOfStatesFragment listOfStatesFragment) {
+    List<Datamm> flowerdatalist;
+
+    public StatesRecyclerAdapter(Context context, List<Datamm> data) {
 
         this.context = context;
         inflater = LayoutInflater.from(context);
-        this.dataList = data;
+        this.flowerdatalist = data;
         this.listOfStatesFragment = listOfStatesFragment;
 
     }
@@ -56,7 +61,7 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return flowerdatalist.size();
     }
 
     @Override
@@ -74,7 +79,7 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
     @Override
     public void onBindViewHolder(final GenericViewHolder holder, final int position) {
-        final StatesList current = dataList.get(position);
+       // final StatesList current = flowerdatalist.get(position);
 
         switch (holder.getItemViewType()) {
 
@@ -82,8 +87,40 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
                 MainViewHolder mainHolder = (MainViewHolder) holder;
 
-                mainHolder.textView.setText(current.getFirstTitle());
-                mainHolder.imageView.setImageResource(current.getImageID());
+                mainHolder.textView.setText(flowerdatalist.get(position).getName());
+
+                final String url="http://services.hanselandpetal.com/photos/"+flowerdatalist.get(position).getPhoto();
+
+                Picasso.with(((MainViewHolder) holder).imageView.getContext())
+                        .load(url)
+                        .into(((MainViewHolder) holder).imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError() {
+                                Log.e("gg>><><>M>",""+holder.getAdapterPosition());
+                            }
+                        });
+
+                mainHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        stateDetailsFragment = new StateDetailsFragment();
+                        Bundle args = new Bundle();
+                        args.putString("Image", url);
+                        stateDetailsFragment.setArguments(args);
+                        transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_layout, stateDetailsFragment);
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+
+                    }
+                });
 
                 break;
 
@@ -91,13 +128,36 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
                 SecondViewHolder secondHolder = (SecondViewHolder) holder;
 
-                secondHolder.textView.setText(current.getFirstTitle());
-                secondHolder.imageView.setImageResource(current.getImageID());
+                secondHolder.textView.setText(flowerdatalist.get(position).getName());
+
+                final String url2 ="http://services.hanselandpetal.com/photos/"+flowerdatalist.get(position).getPhoto();
+
+                Picasso.with(((SecondViewHolder) holder).imageView.getContext())
+                        .load(url2)
+                        .into(((SecondViewHolder) holder).imageView, new Callback() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onError() {
+                                Log.e("gg>><><>M>",""+holder.getAdapterPosition());
+                            }
+                        });
 
                 secondHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(context,"Second View",Toast.LENGTH_SHORT).show();
+                        stateDetailsFragment = new StateDetailsFragment();
+                        Bundle args = new Bundle();
+                        args.putString("Image", url2);
+                        stateDetailsFragment.setArguments(args);
+                        transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
+                        transaction.replace(R.id.frame_layout, stateDetailsFragment);
+                        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                        transaction.addToBackStack(null);
+                        transaction.commit();
 
                     }
                 });
@@ -126,23 +186,23 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
             textView = (TextView) itemView.findViewById(R.id.textView);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context,"First View",Toast.LENGTH_SHORT).show();
-
-                    stateDetailsFragment = new StateDetailsFragment();
-//                  Bundle args = new Bundle();
-//                  args.putString("data", "This data has sent to FragmentTwo");
-//                  stateDetailsFragment.setArguments(args);
-                    transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.frame_layout, stateDetailsFragment);
-                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-
-                }
-            });
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(context,"First View",Toast.LENGTH_SHORT).show();
+//
+//                    stateDetailsFragment = new StateDetailsFragment();
+////                  Bundle args = new Bundle();
+////                  args.putString("data", "This data has sent to FragmentTwo");
+////                  stateDetailsFragment.setArguments(args);
+//                    transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
+//                    transaction.replace(R.id.frame_layout, stateDetailsFragment);
+//                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                    transaction.addToBackStack(null);
+//                    transaction.commit();
+//
+//                }
+//            });
         }
     }
 

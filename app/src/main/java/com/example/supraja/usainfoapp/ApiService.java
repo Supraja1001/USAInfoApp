@@ -1,5 +1,7 @@
 package com.example.supraja.usainfoapp;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 
@@ -8,8 +10,9 @@ import retrofit2.http.GET;
  */
 
 public interface ApiService {
+    @GET("/feeds/flowers.json")
 
-    @GET("all")
-    Call<User> getCountryNames();
+    Call<List<Datamm>> getFlowerNames();
+
 
 }

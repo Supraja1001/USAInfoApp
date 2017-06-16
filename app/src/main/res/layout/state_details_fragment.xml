@@ -10,38 +10,59 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <com.google.android.gms.maps.MapView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/mapView"/>
+    <!--<com.google.android.gms.maps.MapView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="300dp"-->
+        <!--android:id="@+id/mapView"/>-->
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Where to go?"
-        android:textColorHint="@android:color/black"
-        android:layout_below="@+id/mapView"/>
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/flowerImage"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/ic_launcher"/>
+
+    <!--<EditText-->
+        <!--android:id="@+id/editText"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Where to go?"-->
+        <!--android:textColorHint="@android:color/black"-->
+        <!--android:layout_below="@+id/flowerImage"/>-->
 
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/stateName"
-        android:text="New Hampshire"
+        android:id="@+id/name"
+        android:text="Rose"
+        android:textStyle="italic"
         android:textSize="20sp"
         android:textColor="@android:color/holo_orange_dark"
-        android:layout_below="@+id/editText"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/flowerImage"
          />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/capitalName"
+            android:id="@+id/category"
+            android:text="Concord"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/holo_orange_dark"
+            android:layout_below="@+id/name"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/description"
             android:text="Concord"
             android:textSize="20sp"
             android:textColor="@android:color/holo_orange_dark"
-            android:layout_below="@+id/stateName"
+            android:layout_below="@+id/category"
             />
 
         <Button
@@ -50,8 +71,8 @@
             android:id="@+id/visitPlaces"
             android:text="Visit Places"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/capitalName"
-            android:layout_marginTop="100dp"/>
+            android:layout_below="@+id/description"
+            android:layout_marginTop="70dp"/>
 
 
 
