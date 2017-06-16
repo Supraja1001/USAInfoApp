@@ -2,11 +2,13 @@ package com.example.supraja.usainfoapp;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -64,10 +67,16 @@ public class StateDetailsFragment extends Fragment implements OnMapReadyCallback
     private Bundle mBundle;
     private boolean mapsSupported = true;
     private ListOfPlacesFragment listOfPlacesFragment;
+    private ShareAppFragment shareAppFragment;
     FragmentTransaction transaction;
     Button button;
+    Button downloadButton;
     Context context;
     ImageView imageView;
+    TextView catText;
+    TextView descText;
+    TextView flowerName;
+
 
 
     public StateDetailsFragment(){
@@ -85,13 +94,14 @@ public class StateDetailsFragment extends Fragment implements OnMapReadyCallback
         v = inflater.inflate(R.layout.state_details_fragment,container,false);
         button = (Button)v.findViewById(R.id.visitPlaces);
         imageView = (ImageView)v.findViewById(R.id.flowerImage);
+        catText = (TextView)v.findViewById(R.id.categoryText);
+        descText = (TextView)v.findViewById(R.id.descriptionText);
+        flowerName = (TextView)v.findViewById(R.id.name);
+        downloadButton = (Button)v.findViewById(R.id.dwnld_button);
+
         context = v.getContext();
 
-//        String imgPath = getArguments().getString("Image");
-//        Bitmap bitmap = BitmapFactory.decodeFile(imgPath);
-//        imageView.setImageBitmap(bitmap);
-
-        String url = getArguments().getString("Image");
+        final String url = getArguments().getString("Image");
 
         Picasso.with(getContext())
                 .load(url)
@@ -103,31 +113,58 @@ public class StateDetailsFragment extends Fragment implements OnMapReadyCallback
 
                     @Override
                     public void onError() {
-                        Log.e("gg>><><>M>"," did not work");
+                        Log.e("####"," did not work");
                     }
                 });
 
+        String name = getArguments().getString("Name");
+        flowerName.setText(name);
+
+        String category = getArguments().getString("Category");
+        catText.setText(category);
+
+        String desc = getArguments().getString("Description");
+        descText.setText(desc);
 
 
+        downloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                    Intent i = new Intent(getActivity(), ImageDownloadService.class);
+                   i.putExtra("url", url);
+                    getActivity().startService(i);
 
-
-
-
+            }
+        });
             button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listOfPlacesFragment = new ListOfPlacesFragment();
+
+//                listOfPlacesFragment = new ListOfPlacesFragment();
+////              Bundle args = new Bundle();
+////              args.putString("data", "This data has sent to FragmentTwo");
+////              listOfPlacesFragment.setArguments(args);
+//                transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.frame_layout, listOfPlacesFragment);
+//                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//                transaction.addToBackStack(null);
+//                transaction.commit();
+
+                shareAppFragment = new ShareAppFragment();
 //                  Bundle args = new Bundle();
 //                  args.putString("data", "This data has sent to FragmentTwo");
 //                  listOfPlacesFragment.setArguments(args);
                 transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.frame_layout, listOfPlacesFragment);
+                transaction.replace(R.id.frame_layout, shareAppFragment);
                 transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                 transaction.addToBackStack(null);
                 transaction.commit();
+
             }
         });
+
+        setRetainInstance(true);
 
         return v;
     }
@@ -158,4 +195,5 @@ public class StateDetailsFragment extends Fragment implements OnMapReadyCallback
 
 
     }
+
 }

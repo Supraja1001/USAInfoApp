@@ -44,9 +44,6 @@ public class ListOfStatesFragment extends Fragment {
         final RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
         DividerDecoration dividerDecoration = new DividerDecoration(getActivity());
 
-        //StatesRecyclerAdapter adapter = new StatesRecyclerAdapter(getActivity(),StatesList.getData(),new ListOfStatesFragment() );
-       // recyclerView.setAdapter(adapter);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
 
@@ -56,7 +53,6 @@ public class ListOfStatesFragment extends Fragment {
 
        // HttpLoggingInterceptor httpLoggingInterceptor=new HttpLoggingInterceptor();
        // httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-
        // OkHttpClient okHttpClient= new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
 
         Retrofit retrofit =  new Retrofit.Builder()
@@ -74,8 +70,6 @@ public class ListOfStatesFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Datamm>> call, Response<List<Datamm>> response) {
                 // Log.e(".......","sd"+response.body().get(1).getName());
-
-
                 List<Datamm> data=response.body();
                 adapter =new StatesRecyclerAdapter(getContext(),data);
                 recyclerView.setAdapter(adapter);
@@ -88,9 +82,9 @@ public class ListOfStatesFragment extends Fragment {
             }
         });
 
+        setRetainInstance(true);
 
-
-               return view;
+        return view;
     }
 
 }

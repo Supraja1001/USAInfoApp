@@ -41,14 +41,13 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
     private LayoutInflater inflater;
     private Context context;
 
-    List<Datamm> flowerdatalist;
+    private List<Datamm> flowerdatalist;
 
     public StatesRecyclerAdapter(Context context, List<Datamm> data) {
 
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.flowerdatalist = data;
-        this.listOfStatesFragment = listOfStatesFragment;
 
     }
 
@@ -79,7 +78,11 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
     @Override
     public void onBindViewHolder(final GenericViewHolder holder, final int position) {
-       // final StatesList current = flowerdatalist.get(position);
+
+        final String category = flowerdatalist.get(position).getCategory();
+        final String description = flowerdatalist.get(position).getInstructions();
+        final String name = flowerdatalist.get(position).getName();
+        final String url="http://services.hanselandpetal.com/photos/"+flowerdatalist.get(position).getPhoto();
 
         switch (holder.getItemViewType()) {
 
@@ -89,7 +92,7 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
                 mainHolder.textView.setText(flowerdatalist.get(position).getName());
 
-                final String url="http://services.hanselandpetal.com/photos/"+flowerdatalist.get(position).getPhoto();
+
 
                 Picasso.with(((MainViewHolder) holder).imageView.getContext())
                         .load(url)
@@ -101,7 +104,7 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
                             @Override
                             public void onError() {
-                                Log.e("gg>><><>M>",""+holder.getAdapterPosition());
+                                Log.e("####",""+holder.getAdapterPosition());
                             }
                         });
 
@@ -112,6 +115,9 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
                         stateDetailsFragment = new StateDetailsFragment();
                         Bundle args = new Bundle();
                         args.putString("Image", url);
+                        args.putString("Name",name);
+                        args.putString("Category",category);
+                        args.putString("Description",description);
                         stateDetailsFragment.setArguments(args);
                         transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.frame_layout, stateDetailsFragment);
@@ -130,10 +136,8 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
                 secondHolder.textView.setText(flowerdatalist.get(position).getName());
 
-                final String url2 ="http://services.hanselandpetal.com/photos/"+flowerdatalist.get(position).getPhoto();
-
                 Picasso.with(((SecondViewHolder) holder).imageView.getContext())
-                        .load(url2)
+                        .load(url)
                         .into(((SecondViewHolder) holder).imageView, new Callback() {
                             @Override
                             public void onSuccess() {
@@ -142,7 +146,7 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
 
                             @Override
                             public void onError() {
-                                Log.e("gg>><><>M>",""+holder.getAdapterPosition());
+                                Log.e("####",""+holder.getAdapterPosition());
                             }
                         });
 
@@ -151,7 +155,10 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
                     public void onClick(View v) {
                         stateDetailsFragment = new StateDetailsFragment();
                         Bundle args = new Bundle();
-                        args.putString("Image", url2);
+                        args.putString("Image", url);
+                        args.putString("Name",name);
+                        args.putString("Category",category);
+                        args.putString("Description",description);
                         stateDetailsFragment.setArguments(args);
                         transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
                         transaction.replace(R.id.frame_layout, stateDetailsFragment);
@@ -186,23 +193,6 @@ public class StatesRecyclerAdapter extends  RecyclerView.Adapter<StatesRecyclerA
             textView = (TextView) itemView.findViewById(R.id.textView);
             imageView = (ImageView) itemView.findViewById(R.id.imageView);
 
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Toast.makeText(context,"First View",Toast.LENGTH_SHORT).show();
-//
-//                    stateDetailsFragment = new StateDetailsFragment();
-////                  Bundle args = new Bundle();
-////                  args.putString("data", "This data has sent to FragmentTwo");
-////                  stateDetailsFragment.setArguments(args);
-//                    transaction=((SecondActivity)context).getSupportFragmentManager().beginTransaction();
-//                    transaction.replace(R.id.frame_layout, stateDetailsFragment);
-//                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-//                    transaction.addToBackStack(null);
-//                    transaction.commit();
-//
-//                }
-//            });
         }
     }
 

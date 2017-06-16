@@ -21,6 +21,15 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
@@ -44,14 +53,58 @@ public class ListOfPlacesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.places_fragment,container,false);
 
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
+        final RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerView);
         DividerDecoration dividerDecoration = new DividerDecoration(getActivity());
-        PlacesRecyclerAdapter adapter = new PlacesRecyclerAdapter(getActivity(),getList(),getLocationList(),new ListOfPlacesFragment() );
-        recyclerView.setAdapter(adapter);
+       // PlacesRecyclerAdapter adapter = new PlacesRecyclerAdapter(getActivity(),getList(),getLocationList(),new ListOfPlacesFragment() );
+        //recyclerView.setAdapter(adapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(linearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.addItemDecoration(dividerDecoration);
+
+        OkHttpClient okClient = new OkHttpClient.Builder()
+                .addInterceptor(
+                        new Interceptor() {
+                            @Override
+                            public okhttp3.Response intercept(Interceptor.Chain chain) throws IOException {
+                                Request request = chain.request().newBuilder()
+                                        .addHeader("Accept", "Application/JSON").build();
+                                return chain.proceed(request);
+                            }
+                        }).build();
+
+
+        Retrofit retrofit =  new Retrofit.Builder()
+                .baseUrl("https://api.stackexchange.com/2.2")
+                .addConverterFactory(GsonConverterFactory.create())
+                 .client(okClient)
+                .build();
+
+
+        ApiService res=retrofit.create(ApiService.class);
+        Log.d("MainActivity", "Status Code = " +res );
+
+        Call<AnswersResponse.ItemsBean> call=res.getAnswers();
+        Log.d("MainActivity", "Status Code = " +call );
+        call.enqueue(new Callback<AnswersResponse.ItemsBean>()
+        {
+            PlacesRecyclerAdapter adapter;
+            @Override
+            public void onResponse(Call<AnswersResponse.ItemsBean> call, Response<AnswersResponse.ItemsBean> response) {
+                Log.d("MainActivity", "Status Code = " +response.code() );
+//                List<LocationData.LocationBean> data=response.body();
+//                adapter =new PlacesRecyclerAdapter(getContext(),data);
+//                recyclerView.setAdapter(adapter);
+
+            }
+
+            @Override
+            public void onFailure(Call<AnswersResponse.ItemsBean> call, Throwable t) {
+                Log.d("MainActivity", "Failure"  );
+            }
+        });
+
+
 
         return view;
     }

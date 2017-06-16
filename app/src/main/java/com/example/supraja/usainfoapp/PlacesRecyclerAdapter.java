@@ -23,19 +23,18 @@ import java.util.List;
 public class PlacesRecyclerAdapter extends  RecyclerView.Adapter<PlacesRecyclerAdapter.MainViewHolder>{
 
     private List<String> dataList;
-    private List<String> locList;
+    private List<LocationData.LocationBean> locList;
     private LayoutInflater inflater;
     private Context context;
 
+
     private ListOfPlacesFragment listOfPlacesFragment;
 
-    public PlacesRecyclerAdapter(Context context, List<String> data, List<String> loc,ListOfPlacesFragment listOfPlacesFragment) {
+    public PlacesRecyclerAdapter(Context context,List<LocationData.LocationBean> loc) {
 
         this.context = context;
         inflater = LayoutInflater.from(context);
-        this.dataList = data;
         this.locList = loc;
-        this.listOfPlacesFragment = listOfPlacesFragment;
 
     }
 
@@ -63,8 +62,8 @@ public class PlacesRecyclerAdapter extends  RecyclerView.Adapter<PlacesRecyclerA
     @Override
     public void onBindViewHolder(MainViewHolder holder, int position) {
 
-            holder.textView.setText(dataList.get(position));
-            holder.textView2.setText(locList.get(position));
+           // holder.textView.setText(dataList.get(position));
+            holder.textView.setText(locList.get(position).getState());
 
 //        holder.imageView.setImageResource(current.getImageID());
 
@@ -81,8 +80,8 @@ public class PlacesRecyclerAdapter extends  RecyclerView.Adapter<PlacesRecyclerA
             super(itemView);
 
             textView = (TextView) itemView.findViewById(R.id.textView);
-           textView2 = (TextView) itemView.findViewById(R.id.textView1);
-//            imageView = (ImageView) itemView.findViewById(R.id.imageView);
+           // textView2 = (TextView) itemView.findViewById(R.id.textView1);
+//          imageView = (ImageView) itemView.findViewById(R.id.imageView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

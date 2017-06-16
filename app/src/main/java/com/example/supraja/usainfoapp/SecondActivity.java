@@ -44,10 +44,6 @@ public class SecondActivity extends AppCompatActivity {
     JSONObject object;
     Context context;
 
-
-
-
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
@@ -55,24 +51,18 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.second_activity);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        toolbar.setTitle("USAInfo");
+        toolbar.setTitle("FlowerChecker");
         setSupportActionBar(toolbar);
 
         textView = (TextView)findViewById(R.id.textView);
-         name = getIntent().getStringExtra("profileName");
-        Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
+        name = getIntent().getStringExtra("profileName");
+        Log.d("####","Profile Name: "+name);
         textView.setText(name);
-
-
 
         ListOfStatesFragment statesFragment = new ListOfStatesFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.frame_layout, statesFragment);
         fragmentTransaction.commit();
-
-
-
-
 
     }
 
@@ -109,17 +99,28 @@ public class SecondActivity extends AppCompatActivity {
 //
 //        db.deleteUsers();
 
-        // Launching the login activity
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        moveTaskToBack(true);
-        SecondActivity.this.finish();
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
+
+        @Override
+        public void onBackPressed() {
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                getFragmentManager().popBackStack();
+            } else {
+                super.onBackPressed();
+            }
+        }
+
 }

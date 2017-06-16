@@ -30,51 +30,89 @@
         <!--android:textColorHint="@android:color/black"-->
         <!--android:layout_below="@+id/flowerImage"/>-->
 
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/name"
         android:text="Rose"
         android:textStyle="italic"
-        android:textSize="20sp"
-        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="30sp"
+        android:textColor="@android:color/holo_red_dark"
         android:layout_marginTop="20dp"
+        android:gravity="center"
         android:layout_below="@+id/flowerImage"
          />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/category"
-            android:text="Concord"
+            android:text="Category :"
             android:textSize="20sp"
             android:layout_marginTop="10dp"
-            android:textColor="@android:color/holo_orange_dark"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textStyle="italic"
             android:layout_below="@+id/name"
             />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/categoryText"
+            android:text="Category Name"
+            android:textSize="20sp"
+            android:layout_marginTop="368dp"
+            android:textColor="@android:color/black"
+            android:textStyle="italic"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/category"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:id="@+id/description"
-            android:text="Concord"
+            android:text="Description :"
+            android:textStyle="italic"
             android:textSize="20sp"
-            android:textColor="@android:color/holo_orange_dark"
+            android:textColor="@android:color/holo_blue_dark"
             android:layout_below="@+id/category"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/descriptionText"
+            android:text="Describe"
+            android:textSize="20sp"
+            android:layout_marginTop="4dp"
+            android:textColor="@android:color/black"
+            android:textStyle="italic"
+            android:layout_marginLeft="0dp"
+            android:layout_below="@+id/description"
             />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/dwnld_button"
+            android:text="Download Image"
+            android:layout_below="@+id/description"
+            android:backgroundTint="@color/com_facebook_blue"
+            android:layout_marginTop="80dp"
+            android:layout_marginLeft="40dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/visitPlaces"
-            android:text="Visit Places"
+            android:text="Like? Then Share!"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/description"
-            android:layout_marginTop="70dp"/>
-
-
+            android:layout_toRightOf="@+id/dwnld_button"
+            android:backgroundTint="@color/com_facebook_blue"
+            android:layout_marginTop="80dp"/>
 
     </RelativeLayout>
 

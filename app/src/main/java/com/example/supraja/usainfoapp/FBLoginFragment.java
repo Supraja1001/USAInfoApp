@@ -67,7 +67,7 @@ public class FBLoginFragment extends Fragment{
             if(profile!=null){
                 name = profile.getName();
             } else{
-                Toast.makeText(getActivity(),"Name is null",Toast.LENGTH_SHORT).show();
+                Log.d("####","Name : " +name);
             }
 
             getInfoButton.setOnClickListener(new View.OnClickListener() {
@@ -171,7 +171,6 @@ public class FBLoginFragment extends Fragment{
             }
         };
     }
-
 
 
     private String setupProfileTracker() {
